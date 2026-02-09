@@ -5,13 +5,13 @@ Built by the SciFit GatorAI Project Team
 
 ---
 
-## 🧠 Project Vision
+## Project Vision
 
 SciFit Tracker helps gym-goers train smarter by combining workout tracking, nutrition logging, and AI-driven feedback grounded in exercise science.
 
 ---
 
-## ❗ The Problem We’re Solving
+## The Problem We’re Solving
 
 Most fitness apps:
 - Only log data or give generic advice
@@ -23,7 +23,7 @@ SciFit Tracker connects **data + science + AI**.
 
 ---
 
-## 👤 User Profile & Tracking
+## User Profile & Tracking
 
 ### Profile Information
 - Age, height, weight
@@ -41,7 +41,7 @@ SciFit Tracker connects **data + science + AI**.
 
 ---
 
-## 🤖 Where AI Is Used
+## Where AI Is Used
 
 ### Multimodal AI Fitness Assistant
 - Accepts text, images, and videos
@@ -62,7 +62,7 @@ SciFit Tracker connects **data + science + AI**.
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 **Frontend**
 - React Native
@@ -79,7 +79,7 @@ SciFit Tracker connects **data + science + AI**.
 
 ---
 
-## 🚀 Roadmap (10-Week Plan)
+## 10-Week Plan
 
 ### Stage 0 — Define MVP
 
@@ -130,9 +130,7 @@ We focus only on what is necessary for a working demo.
 
 ---
 
-## ✅ MVP Deliverable
-
-By end of semester we will have:
+## MVP Deliverable
 
 - Working mobile app
 - AI assistant grounded in research
@@ -141,9 +139,7 @@ By end of semester we will have:
 
 ---
 
-## 🎯 Team Goals
-
-This project is designed to give members experience with:
+## Team Goals
 
 - Multimodal AI systems
 - RAG pipelines
@@ -154,7 +150,7 @@ This project is designed to give members experience with:
 
 ---
 
-## 📚 Knowledge Base Sources
+## Knowledge Base Sources
 
 - PubMed research on muscle hypertrophy
 - Curated summaries from reputable fitness educators
@@ -162,15 +158,7 @@ This project is designed to give members experience with:
 
 ---
 
-## 🧭 Guiding Principle
-
-> Start simple. Ship the MVP. Then improve.
-
-We prioritize working systems over overengineering.
-
----
-
-## 👥 Subteam Areas (parallel work)
+## Subteam Areas
 
 - Frontend and UX (React Native)
 - Backend and Database (Supabase)
