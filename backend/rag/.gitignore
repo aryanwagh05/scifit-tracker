@@ -1,0 +1,12 @@
+# Generated pipeline artifacts
+data/
+
+# Local paper sources should stay local unless explicitly needed
+sources/*.pdf
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Local env
+.env
