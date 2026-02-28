@@ -39,13 +39,18 @@ build/Release
 
 # Dependency directories
 node_modules/
+.expo/
+.expo-shared/
 jspm_packages/
+**/.npm-cache/
 
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
 
 # TypeScript cache
 *.tsbuildinfo
+__pycache__/
+*.py[cod]
 
 # Optional npm cache directory
 .npm
@@ -69,6 +74,10 @@ web_modules/
 .env
 .env.*
 !.env.example
+
+# Generated RAG artifacts
+backend/rag/data/
+backend/rag/sources/*.pdf
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
