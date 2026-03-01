@@ -1,6 +1,6 @@
 import type { ComponentType } from 'react';
 import { Pressable, Text, View } from 'react-native';
-import { Camera, ClipboardList, Home, Search, User } from '@tamagui/lucide-icons';
+import { Camera, ClipboardList, Film, Home, Search, User } from '@tamagui/lucide-icons';
 import type { RouteKey } from '@/src/app/navigation/types';
 import { styles } from '@/src/shared/ui/styles';
 
@@ -14,6 +14,7 @@ export function BottomNav({ route, setRoute }: { route: RouteKey; setRoute: (val
         <BottomNavItem label="Workout" icon={ClipboardList} active={route === 'workoutLog'} onPress={() => setRoute('workoutLog')} />
         <BottomNavItem label="Coach" icon={Camera} active={route === 'aiCoach'} onPress={() => setRoute('aiCoach')} />
         <BottomNavItem label="RAG" icon={Search} active={route === 'raglab'} onPress={() => setRoute('raglab')} />
+        <BottomNavItem label="Media" icon={Film} active={route === 'mediaAnalysis'} onPress={() => setRoute('mediaAnalysis')} />
       </View>
     </View>
   );

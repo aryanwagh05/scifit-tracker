@@ -8,5 +8,4 @@ sources/*.pdf
 __pycache__/
 *.py[cod]
 
-# Local env
-.env
+# .env is committed intentionally so teammates can run the project

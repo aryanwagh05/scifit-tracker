@@ -113,6 +113,37 @@ def call_openai_chat(prompt: str, model: str) -> str:
     return body["choices"][0]["message"]["content"]
 
 
+def call_gemini_chat(prompt: str) -> str:
+    api_key = os.environ.get("GEMINI_API_KEY", "").strip()
+    if not api_key:
+        raise RuntimeError("GEMINI_API_KEY is not set. Run: export GEMINI_API_KEY=<your_key>")
+
+    url = (
+        "https://generativelanguage.googleapis.com/v1beta"
+        f"/models/gemini-flash-latest:generateContent?key={api_key}"
+    )
+    payload = {
+        "contents": [{"parts": [{"text": prompt}]}],
+        "generationConfig": {"responseMimeType": "application/json"},
+    }
+
+    req = urllib.request.Request(
+        url=url,
+        data=json.dumps(payload).encode("utf-8"),
+        headers={"Content-Type": "application/json"},
+        method="POST",
+    )
+
+    try:
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            body = json.loads(resp.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        message = e.read().decode("utf-8", errors="replace")
+        raise RuntimeError(f"Gemini API error: {message}") from e
+
+    return body["candidates"][0]["content"]["parts"][0]["text"]
+
+
 def build_mock_response(query: str, retrieved: list[dict]) -> dict:
     if not retrieved:
         return {
@@ -161,9 +192,9 @@ def main() -> None:
     )
     parser.add_argument(
         "--mode",
-        choices=["mock", "openai"],
+        choices=["mock", "openai", "gemini"],
         default="mock",
-        help="Generation mode",
+        help="Generation mode: mock (no key needed), openai, or gemini",
     )
     parser.add_argument(
         "--llm-model",
@@ -200,6 +231,17 @@ def main() -> None:
 
     if args.mode == "openai":
         content = call_openai_chat(prompt=prompt, model=args.llm_model)
+        try:
+            answer_json = json.loads(content)
+        except json.JSONDecodeError:
+            answer_json = {
+                "answer": content,
+                "evidence": [],
+                "confidence": "unknown",
+                "warning": "Model did not return strict JSON.",
+            }
+    elif args.mode == "gemini":
+        content = call_gemini_chat(prompt=prompt)
         try:
             answer_json = json.loads(content)
         except json.JSONDecodeError:

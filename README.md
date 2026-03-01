@@ -165,3 +165,88 @@ We focus only on what is necessary for a working demo.
 - AI Assistant (RAG)
 - Multimodal AI (image and video feedback)
 - Analytics and Planning (progress and plan logic)
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) v18+
+- [Expo Go](https://expo.dev/go) app on your phone (iOS or Android)
+- Python 3.10+ (for the RAG pipeline only)
+- A free [Gemini API key](https://aistudio.google.com/app/apikey)
+
+---
+
+### 1. Clone the repo
+
+```bash
+git clone https://github.com/your-org/scifit-tracker.git
+cd scifit-tracker
+```
+
+---
+
+### 2. Set up the mobile app
+
+```bash
+cd apps/scifit-app
+npm install
+```
+
+Create a `.env` file in `apps/scifit-app/`:
+
+```
+EXPO_PUBLIC_GEMINI_API_KEY=your_gemini_api_key_here
+```
+
+Start the dev server:
+
+```bash
+npm start
+```
+
+Then:
+- **Phone:** Open Expo Go → scan the QR code shown in the terminal (must be on the same Wi-Fi)
+- **Browser:** Press `w` in the terminal to open the web version
+
+> Code changes hot-reload automatically — you only need to run `npm start` once per session.
+
+---
+
+### 3. RAG pipeline (optional — Python backend)
+
+```bash
+cd backend/rag
+python -m venv .venv
+source .venv/bin/activate        # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+Copy the example env file and fill in your keys:
+
+```bash
+cp .env.example .env
+```
+
+Run a question against the research corpus:
+
+```bash
+# Mock mode (no API key needed)
+make answer q="How many sets per week for hypertrophy?"
+
+# Gemini mode
+make answer-gemini q="How many sets per week for hypertrophy?"
+```
+
+---
+
+### 4. Supabase edge functions (optional)
+
+Requires the [Supabase CLI](https://supabase.com/docs/guides/cli).
+
+```bash
+supabase secrets set GEMINI_API_KEY=your_gemini_api_key_here
+supabase functions deploy media-analysis
+```

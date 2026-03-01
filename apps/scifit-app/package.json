@@ -17,6 +17,8 @@
     "@tamagui/lucide-icons": "^2.0.0-rc.14",
     "expo": "~54.0.33",
     "expo-camera": "^17.0.10",
+    "expo-file-system": "~19.0.21",
+    "expo-image-picker": "~17.0.10",
     "expo-status-bar": "~3.0.9",
     "react": "19.1.0",
     "react-dom": "19.1.0",

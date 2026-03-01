@@ -1,3 +1,6 @@
+# Claude Code session data
+.claude/
+
 # Logs
 logs
 *.log
@@ -70,10 +73,8 @@ __pycache__/
 # Yarn Integrity file
 .yarn-integrity
 
-# dotenv environment variable files
-.env
-.env.*
-!.env.example
+# dotenv — committed so teammates can run the project
+# !.env files are tracked intentionally
 
 # Generated RAG artifacts
 backend/rag/data/

@@ -1,4 +1,4 @@
-.PHONY: venv install parse chunk embed search answer-mock answer-openai pipeline dry-upload
+.PHONY: venv install parse chunk embed search answer-mock answer-openai answer-gemini pipeline dry-upload
 
 venv:
 	python3 -m venv .venv
@@ -23,6 +23,9 @@ answer-mock:
 
 answer-openai:
 	. .venv/bin/activate && python backend/rag/scripts/generate_answer.py --query "$(q)" --mode openai --llm-model gpt-4o-mini --top-k $(or $(top_k),5) --embed-model intfloat/e5-small-v2 --e5-prefix-mode auto
+
+answer-gemini:
+	. .venv/bin/activate && GEMINI_API_KEY=$(GEMINI_API_KEY) python backend/rag/scripts/generate_answer.py --query "$(q)" --mode gemini --top-k $(or $(top_k),5) --embed-model intfloat/e5-small-v2 --e5-prefix-mode auto
 
 pipeline:
 	. .venv/bin/activate && bash backend/rag/scripts/run_pipeline.sh "$(q)" $(or $(top_k),3)

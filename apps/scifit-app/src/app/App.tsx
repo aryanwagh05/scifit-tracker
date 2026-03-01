@@ -17,6 +17,7 @@ import { WorkoutLogPage } from '@/src/features/workout/WorkoutLogPage';
 import { RagLabPage } from '@/src/features/rag/RagLabPage';
 import { AICoachPage } from '@/src/features/coach/AICoachPage';
 import { AICameraGuideModal } from '@/src/features/coach/AICameraGuideModal';
+import { MediaAnalysisPage } from '@/src/features/media/MediaAnalysisPage';
 
 export default function App() {
   const [route, setRoute] = useState<RouteKey>('dashboard');
@@ -153,6 +154,8 @@ export default function App() {
                   onOpenGuide={() => setCameraGuideOpen(true)}
                 />
               ) : null}
+
+              {route === 'mediaAnalysis' ? <MediaAnalysisPage /> : null}
             </ScrollView>
           </KeyboardAvoidingView>
 
