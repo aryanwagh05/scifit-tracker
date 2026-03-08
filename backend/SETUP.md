@@ -82,10 +82,10 @@ For when deployment is ready, or if we would prefer using database in the cloud 
 
 ```bash
 cd backend
-supabase link --project-ref pvbaspuiemiwnwoonioy
+supabase link --project-ref <project-id>
 ```
 
-This will open browser login - authenticate with your GitHub account
+This will open browser login - authenticate with your GitHub account. Ask for project id or check GitHub Variables
 
 ### Step 2: Update .env for Cloud
 
