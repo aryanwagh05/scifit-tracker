@@ -1,6 +1,5 @@
 -- SciFit Tracker Database Schema
 
--- Enable UUID extension
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- PROFILES TABLE
@@ -66,42 +65,94 @@ ALTER TABLE sets ENABLE ROW LEVEL SECURITY;
 ALTER TABLE nutrition_logs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE media_uploads ENABLE ROW LEVEL SECURITY;
 
--- Profiles: users can only see/edit their own profile
-CREATE POLICY "Users can view own profile" ON profiles FOR SELECT USING (auth.uid() = id);
-CREATE POLICY "Users can insert own profile" ON profiles FOR INSERT WITH CHECK (auth.uid() = id);
-CREATE POLICY "Users can update own profile" ON profiles FOR UPDATE USING (auth.uid() = id);
+-- Profiles - only allow users to see/edit their own profile
+CREATE POLICY "Users can view own profile" ON profiles 
+FOR SELECT 
+USING (auth.uid() = id);
 
--- Workouts: users can only see/edit their own workouts
-CREATE POLICY "Users can view own workouts" ON workouts FOR SELECT USING (auth.uid() = user_id);
-CREATE POLICY "Users can insert own workouts" ON workouts FOR INSERT WITH CHECK (auth.uid() = user_id);
-CREATE POLICY "Users can update own workouts" ON workouts FOR UPDATE USING (auth.uid() = user_id);
-CREATE POLICY "Users can delete own workouts" ON workouts FOR DELETE USING (auth.uid() = user_id);
+CREATE POLICY "Users can insert own profile" ON profiles 
+FOR INSERT 
+WITH CHECK (auth.uid() = id);
 
--- Sets: users can only see/edit sets for their own workouts
-CREATE POLICY "Users can view own sets" ON sets FOR SELECT USING (
+CREATE POLICY "Users can update own profile" ON profiles 
+FOR UPDATE 
+USING (auth.uid() = id);
+
+-- Workouts - only allow users to see/edit their own workouts
+CREATE POLICY "Users can view own workouts" ON workouts 
+FOR SELECT 
+USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can insert own workouts" ON workouts 
+FOR INSERT 
+WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can update own workouts" ON workouts 
+FOR UPDATE 
+USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can delete own workouts" ON workouts 
+FOR DELETE 
+USING (auth.uid() = user_id);
+
+-- Sets - only allow users to see/edit sets for their own workouts
+CREATE POLICY "Users can view own sets" ON sets 
+FOR SELECT 
+USING (
   auth.uid() = (SELECT user_id FROM workouts WHERE id = sets.workout_id)
 );
-CREATE POLICY "Users can insert own sets" ON sets FOR INSERT WITH CHECK (
+
+CREATE POLICY "Users can insert own sets" ON sets 
+FOR INSERT 
+WITH CHECK (
   auth.uid() = (SELECT user_id FROM workouts WHERE id = sets.workout_id)
 );
-CREATE POLICY "Users can update own sets" ON sets FOR UPDATE USING (
+
+CREATE POLICY "Users can update own sets" ON sets 
+FOR UPDATE 
+USING (
   auth.uid() = (SELECT user_id FROM workouts WHERE id = sets.workout_id)
 );
-CREATE POLICY "Users can delete own sets" ON sets FOR DELETE USING (
+
+CREATE POLICY "Users can delete own sets" ON sets 
+FOR DELETE 
+USING (
   auth.uid() = (SELECT user_id FROM workouts WHERE id = sets.workout_id)
 );
 
 -- Nutrition Logs: users can only see/edit their own nutrition logs
-CREATE POLICY "Users can view own nutrition logs" ON nutrition_logs FOR SELECT USING (auth.uid() = user_id);
-CREATE POLICY "Users can insert own nutrition logs" ON nutrition_logs FOR INSERT WITH CHECK (auth.uid() = user_id);
-CREATE POLICY "Users can update own nutrition logs" ON nutrition_logs FOR UPDATE USING (auth.uid() = user_id);
-CREATE POLICY "Users can delete own nutrition logs" ON nutrition_logs FOR DELETE USING (auth.uid() = user_id);
+CREATE POLICY "Users can view own nutrition logs" ON nutrition_logs 
+FOR SELECT 
+USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can insert own nutrition logs" ON nutrition_logs 
+FOR INSERT 
+WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can update own nutrition logs" ON nutrition_logs 
+FOR UPDATE 
+USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can delete own nutrition logs" ON nutrition_logs 
+FOR DELETE 
+USING (auth.uid() = user_id);
 
 -- Media Uploads: users can only see/edit their own uploads
-CREATE POLICY "Users can view own media uploads" ON media_uploads FOR SELECT USING (auth.uid() = user_id);
-CREATE POLICY "Users can insert own media uploads" ON media_uploads FOR INSERT WITH CHECK (auth.uid() = user_id);
-CREATE POLICY "Users can update own media uploads" ON media_uploads FOR UPDATE USING (auth.uid() = user_id);
-CREATE POLICY "Users can delete own media uploads" ON media_uploads FOR DELETE USING (auth.uid() = user_id);
+CREATE POLICY "Users can view own media uploads" ON media_uploads 
+FOR SELECT 
+USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can insert own media uploads" ON media_uploads 
+FOR INSERT 
+WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can update own media uploads" ON media_uploads 
+FOR UPDATE 
+USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can delete own media uploads" ON media_uploads 
+FOR DELETE 
+USING (auth.uid() = user_id);
 
 -- Function to handle new user signup - automatically create profile
 CREATE OR REPLACE FUNCTION public.handle_new_user()
