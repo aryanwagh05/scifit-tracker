@@ -78,32 +78,20 @@ ___IGNORE___ (still working on this)
 
 For when deployment is ready, or if we would prefer using database in the cloud from the start.
 
-### Step 1: Get Cloud Project Credentials
-
-1. Go to: https://supabase.com/dashboard
-2. Select project: **pvbaspuiemiwnwoonioy**
-3. Navigate to **Settings → API**
-4. Copy:
-   - **Project URL** (at the top)
-   - **anon public** key (under "Project API keys")
-   - **service_role** key (click "reveal" to see)
-
-### Step 2: Link to Cloud Project
+### Step 1: Link to Cloud Project
 
 ```bash
 cd backend
 supabase link --project-ref pvbaspuiemiwnwoonioy
 ```
 
-> This opens browser login - authenticate with your GitHub account
+This will open browser login - authenticate with your GitHub account
 
-### Step 3: Update .env for Cloud
+### Step 2: Update .env for Cloud
 
 Get cloud credentials from one of these:
 
-**Option A: Ask Team Lead** - Get the keys from your team lead
-
-**Option B: From GitHub Secrets** (if you're setting up CI/CD or have access):
+**Option A: From GitHub Secrets** (if you're setting up CI/CD or have access):
 ```
 SUPABASE_URL=${{ secrets.SUPABASE_URL }}
 SUPABASE_PUBLISHABLE_KEY=${{ secrets.SUPABASE_ANON_KEY }}
@@ -111,7 +99,10 @@ SUPABASE_SERVICE_ROLE_KEY=${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
 SUPABASE_KEY=${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
 ```
 
-**Option C: From Supabase Dashboard:**
+**Option B: Ask for Secrets/Get Added to Dashboard:**
+
+If on Dashboard already:
+
 1. Go to: https://supabase.com/dashboard/project/pvbaspuiemiwnwoonioy/settings/api
 2. Copy the values from there
 
@@ -119,13 +110,13 @@ Edit `.env` with cloud credentials:
 
 ```env
 # Cloud Supabase
-SUPABASE_URL=https://pvbaspuiemiwnwoonioy.supabase.co
+SUPABASE_URL=supabase_project_url
 SUPABASE_PUBLISHABLE_KEY=your_cloud_anon_key
 SUPABASE_SERVICE_ROLE_KEY=your_cloud_service_role_key
 SUPABASE_KEY=your_cloud_service_role_key
 ```
 
-### Step 4: Push Schema to Cloud
+### Step 3: Push Schema to Cloud
 
 ```bash
 supabase db push
@@ -133,7 +124,7 @@ supabase db push
 
 ---
 
-## Switching Between Local and Cloud
+## To Switch Between Local and Cloud
 
 | Action | Command |
 |--------|---------|
