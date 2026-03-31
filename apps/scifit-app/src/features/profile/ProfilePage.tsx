@@ -33,7 +33,7 @@ export function ProfilePage({
           <Text style={styles.heroEyebrow}>Profile</Text>
         </View>
         <Text style={styles.heroTitle}>Athlete Setup</Text>
-        <Text style={styles.heroSubtitle}>Save profile routes to Workout Log screen.</Text>
+        <Text style={styles.heroSubtitle}>Your info helps personalize AI coaching and recommendations.</Text>
       </Card>
 
       <GlassCard title="Profile Inputs" icon={ClipboardList}>

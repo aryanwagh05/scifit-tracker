@@ -1,7 +1,7 @@
 import { Pressable, Text, TextInput, View } from 'react-native';
 import { Card } from 'tamagui';
-import { Sparkles, User } from '@tamagui/lucide-icons';
-import { GlassCard, InfoRow } from '@/src/shared/ui/atoms';
+import { User } from '@tamagui/lucide-icons';
+import { GlassCard } from '@/src/shared/ui/atoms';
 import { styles } from '@/src/shared/ui/styles';
 
 export function LoginPage({
@@ -27,7 +27,7 @@ export function LoginPage({
           <Text style={styles.heroEyebrow}>Login</Text>
         </View>
         <Text style={styles.heroTitle}>Welcome Back</Text>
-        <Text style={styles.heroSubtitle}>Frontend flow only. No auth validation yet.</Text>
+        <Text style={styles.heroSubtitle}>Sign in to continue.</Text>
       </Card>
 
       <GlassCard title="Sign In" icon={User}>
@@ -72,10 +72,6 @@ export function LoginPage({
         </Pressable>
       </GlassCard>
 
-      <GlassCard title="Why This Screen Exists" icon={Sparkles}>
-        <InfoRow label="Purpose" value="Simple auth flow checkpoint for MVP navigation." />
-        <InfoRow label="Current Mode" value="Frontend-only flow test (no backend validation)." />
-      </GlassCard>
     </View>
   );
 }

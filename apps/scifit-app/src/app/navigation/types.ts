@@ -1,1 +1,1 @@
-export type RouteKey = 'dashboard' | 'login' | 'profile' | 'workoutLog' | 'raglab' | 'aiCoach' | 'mediaAnalysis';
+export type RouteKey = 'dashboard' | 'login' | 'profile' | 'workoutLog' | 'formAnalysis';
