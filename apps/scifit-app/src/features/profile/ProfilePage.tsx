@@ -1,8 +1,9 @@
 import { Pressable, Text, View } from 'react-native';
 import { Card } from 'tamagui';
-import { Brain, ClipboardList, User } from '@tamagui/lucide-icons';
+import { Brain, ClipboardList, LogOut, User } from '@tamagui/lucide-icons';
 import { GlassCard, InfoRow, ProfileInput } from '@/src/shared/ui/atoms';
 import { styles } from '@/src/shared/ui/styles';
+import { useAuth } from '@/src/context/AuthContext';
 
 export function ProfilePage({
   height,
@@ -25,6 +26,8 @@ export function ProfilePage({
   setDaysPerWeek: (value: string) => void;
   onSaveProfile: () => void;
 }) {
+  const { user, signOut } = useAuth();
+
   return (
     <View style={styles.pageStack}>
       <Card style={styles.heroCard}>
@@ -33,8 +36,32 @@ export function ProfilePage({
           <Text style={styles.heroEyebrow}>Profile</Text>
         </View>
         <Text style={styles.heroTitle}>Athlete Setup</Text>
-        <Text style={styles.heroSubtitle}>Save profile routes to Workout Log screen.</Text>
+        <Text style={styles.heroSubtitle}>
+          {user?.email ?? 'Not signed in'}
+        </Text>
       </Card>
+
+      {/* Signed in account info + sign out */}
+      <GlassCard title="Account" icon={User}>
+        <InfoRow label="Email" value={user?.email ?? '—'} />
+        <InfoRow label="User ID" value={user?.id ? `${user.id.slice(0, 8)}...` : '—'} />
+        <InfoRow
+          label="Joined"
+          value={user?.created_at
+            ? new Date(user.created_at).toLocaleDateString()
+            : '—'}
+        />
+
+        <Pressable
+          style={[styles.secondaryButton, { marginTop: 12 }]}
+          onPress={signOut}
+        >
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, justifyContent: 'center' }}>
+            <LogOut size={14} color="#89a3bf" />
+            <Text style={styles.secondaryButtonText}>Sign Out</Text>
+          </View>
+        </Pressable>
+      </GlassCard>
 
       <GlassCard title="Profile Inputs" icon={ClipboardList}>
         <ProfileInput label="Height (cm)" value={height} onChangeText={setHeight} keyboardType="numeric" />
