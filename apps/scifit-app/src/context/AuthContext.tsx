@@ -36,10 +36,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => subscription.unsubscribe();
   }, []);
 
-  const signUp = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signUp({ email, password });
-    return { error };
-  };
+ const signUp = async (email: string, password: string) => {
+  const { data, error } = await supabase.auth.signUp({ email, password });
+  if (!error && data.user && !data.user.identities?.length) {
+    return { error: new Error('An account with this email already exists.') };
+  }
+  return { error };
+};
 
   const signIn = async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
