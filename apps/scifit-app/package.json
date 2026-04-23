@@ -13,10 +13,12 @@
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
     "@legendapp/motion": "^2.5.3",
+    "@supabase/supabase-js": "^2.103.3",
     "@tamagui/config": "^2.0.0-rc.14",
     "@tamagui/lucide-icons": "^2.0.0-rc.14",
     "expo": "~54.0.33",
     "expo-camera": "^17.0.10",
+    "expo-secure-store": "~15.0.8",
     "expo-status-bar": "~3.0.9",
     "react": "19.1.0",
     "react-dom": "19.1.0",

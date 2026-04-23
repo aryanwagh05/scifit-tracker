@@ -17,17 +17,16 @@ import { WorkoutLogPage } from '@/src/features/workout/WorkoutLogPage';
 import { RagLabPage } from '@/src/features/rag/RagLabPage';
 import { AICoachPage } from '@/src/features/coach/AICoachPage';
 import { AICameraGuideModal } from '@/src/features/coach/AICameraGuideModal';
+import { AuthProvider, useAuth } from '@/src/context/AuthContext';
 
-export default function App() {
+function AppContent() {
+  const { user, loading: authLoading } = useAuth();
   const [route, setRoute] = useState<RouteKey>('dashboard');
 
   const [question, setQuestion] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [queryLoading, setQueryLoading] = useState(false);
   const [result, setResult] = useState<RagResponse | null>(null);
   const [error, setError] = useState('');
-
-  const [loginEmail, setLoginEmail] = useState('');
-  const [loginPassword, setLoginPassword] = useState('');
 
   const [height, setHeight] = useState('175');
   const [weight, setWeight] = useState('74');
@@ -47,18 +46,16 @@ export default function App() {
   }, [result]);
 
   async function runQuery() {
-    if (!question.trim() || loading) return;
-
-    setLoading(true);
+    if (!question.trim() || queryLoading) return;
+    setQueryLoading(true);
     setError('');
-
     try {
       const next = await askRag(question, 5);
       setResult(next);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Request failed.');
     } finally {
-      setLoading(false);
+      setQueryLoading(false);
     }
   }
 
@@ -74,91 +71,104 @@ export default function App() {
       setCoachSessionActive(false);
       return false;
     }
-
     setCoachSessionActive(true);
     return true;
   }
 
+  if (authLoading) return null;
+
+  if (!user) {
+    return (
+      <SafeAreaView style={styles.screen}>
+        <StatusBar style="dark" />
+        <GlassBackdrop />
+        <LoginPage
+          onLogIn={() => setRoute('dashboard')}
+          onCreateAccount={() => setRoute('profile')}
+        />
+      </SafeAreaView>
+    );
+  }
+
+  return (
+    <SafeAreaView style={styles.screen}>
+      <StatusBar style="dark" />
+      <GlassBackdrop />
+
+      <KeyboardAvoidingView
+        style={styles.keyboardAvoidingView}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      >
+        <ScrollView
+          contentContainerStyle={styles.scrollContent}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+        >
+          {route === 'dashboard' && (
+            <DashboardPage
+              onOpenCameraGuide={() => setCameraGuideOpen(true)}
+              onGoCoach={() => setRoute('aiCoach')}
+            />
+          )}
+          {route === 'login' && (
+            <LoginPage
+              onLogIn={() => setRoute('dashboard')}
+              onCreateAccount={() => setRoute('profile')}
+            />
+          )}
+          {route === 'profile' && (
+            <ProfilePage
+              height={height}
+              setHeight={setHeight}
+              weight={weight}
+              setWeight={setWeight}
+              goal={goal}
+              setGoal={setGoal}
+              daysPerWeek={daysPerWeek}
+              setDaysPerWeek={setDaysPerWeek}
+              onSaveProfile={() => setRoute('workoutLog')}
+            />
+          )}
+          {route === 'workoutLog' && <WorkoutLogPage />}
+          {route === 'raglab' && (
+            <RagLabPage
+              question={question}
+              setQuestion={setQuestion}
+              loading={queryLoading}
+              runQuery={runQuery}
+              error={error}
+              result={result}
+              confidence={confidence}
+            />
+          )}
+          {route === 'aiCoach' && (
+            <AICoachPage
+              selectedExercise={selectedExercise}
+              setSelectedExercise={setSelectedExercise}
+              coachSessionActive={coachSessionActive}
+              cameraPermissionGranted={!!cameraPermission?.granted}
+              onRequestCameraPermission={ensureCameraPermission}
+              onStartSession={startCoachSession}
+              onStopSession={() => setCoachSessionActive(false)}
+              onOpenGuide={() => setCameraGuideOpen(true)}
+            />
+          )}
+        </ScrollView>
+      </KeyboardAvoidingView>
+
+      <BottomNav route={route} setRoute={setRoute} />
+      <AICameraGuideModal open={cameraGuideOpen} onClose={() => setCameraGuideOpen(false)} />
+    </SafeAreaView>
+  );
+}
+
+export default function App() {
   return (
     <TamaguiProvider config={tamaguiConfig} defaultTheme="light">
       <SafeAreaProvider>
-        <SafeAreaView style={styles.screen}>
-          <StatusBar style="dark" />
-          <GlassBackdrop />
-
-          <KeyboardAvoidingView
-            style={styles.keyboardAvoidingView}
-            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-          >
-            <ScrollView
-              contentContainerStyle={styles.scrollContent}
-              keyboardShouldPersistTaps="handled"
-              showsVerticalScrollIndicator={false}
-            >
-              {route === 'dashboard' ? (
-                <DashboardPage
-                  onOpenCameraGuide={() => setCameraGuideOpen(true)}
-                  onGoCoach={() => setRoute('aiCoach')}
-                />
-              ) : null}
-
-              {route === 'login' ? (
-                <LoginPage
-                  email={loginEmail}
-                  password={loginPassword}
-                  setEmail={setLoginEmail}
-                  setPassword={setLoginPassword}
-                  onLogIn={() => setRoute('dashboard')}
-                  onCreateAccount={() => setRoute('profile')}
-                />
-              ) : null}
-
-              {route === 'profile' ? (
-                <ProfilePage
-                  height={height}
-                  setHeight={setHeight}
-                  weight={weight}
-                  setWeight={setWeight}
-                  goal={goal}
-                  setGoal={setGoal}
-                  daysPerWeek={daysPerWeek}
-                  setDaysPerWeek={setDaysPerWeek}
-                  onSaveProfile={() => setRoute('workoutLog')}
-                />
-              ) : null}
-
-              {route === 'workoutLog' ? <WorkoutLogPage /> : null}
-
-              {route === 'raglab' ? (
-                <RagLabPage
-                  question={question}
-                  setQuestion={setQuestion}
-                  loading={loading}
-                  runQuery={runQuery}
-                  error={error}
-                  result={result}
-                  confidence={confidence}
-                />
-              ) : null}
-
-              {route === 'aiCoach' ? (
-                <AICoachPage
-                  selectedExercise={selectedExercise}
-                  setSelectedExercise={setSelectedExercise}
-                  coachSessionActive={coachSessionActive}
-                  cameraPermissionGranted={!!cameraPermission?.granted}
-                  onRequestCameraPermission={ensureCameraPermission}
-                  onStartSession={startCoachSession}
-                  onStopSession={() => setCoachSessionActive(false)}
-                  onOpenGuide={() => setCameraGuideOpen(true)}
-                />
-              ) : null}
-            </ScrollView>
-          </KeyboardAvoidingView>
-
-          <BottomNav route={route} setRoute={setRoute} />
-          <AICameraGuideModal open={cameraGuideOpen} onClose={() => setCameraGuideOpen(false)} />
-        </SafeAreaView>
+        <AuthProvider>
+          <AppContent />
+        </AuthProvider>
       </SafeAreaProvider>
     </TamaguiProvider>
   );
